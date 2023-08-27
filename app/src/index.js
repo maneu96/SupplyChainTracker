@@ -69,7 +69,6 @@ const App = {
 
   harvestItem : async function (){
     const {harvestItem} = this.meta.methods;
-    this.setRoles();
     let upc = document.getElementById("upc").value;
 
     let originFarmerID = document.getElementById("originFarmerID").value;
@@ -78,57 +77,67 @@ const App = {
     let originFarmLatitude = document.getElementById("originFarmLatitude").value;
     let originFarmLongitude = document.getElementById("originFarmLongitude").value;
     let productNotes = document.getElementById("productNotes").value;
-    await harvestItem(upc,originFarmerID,
+    let tx = await harvestItem(upc,originFarmerID,
     originFarmName,originFarmInformation,
     originFarmLatitude,originFarmLongitude,productNotes).send({from: this.account});
-    App.setStatus("    Product Added")
+    this.setStatus(tx.transactionHash)
   },
   // Implement Task 4 Modify the front end of the DAPP
   processItem: async function (){
+    this.getAccount();
     const {processItem} = this.meta.methods;
     let upc = document.getElementById("upc").value;
-    await processItem(upc).send({from: this.account});
+    let tx = await processItem(upc).send({from: this.account});
+    console.log(tx)
+    this.setStatus(tx.transactionHash)
   },
   
   packItem: async function (){
+    this.getAccount();
     const {packItem} = this.meta.methods;
     let upc = document.getElementById("upc").value;
-    await packItem(upc).send({from: this.account});
+    let tx = await packItem(upc).send({from: this.account});
+    this.setStatus(tx.transactionHash)
   },
 
   sellItem: async function (){
+    this.getAccount();
     const {sellItem} = this.meta.methods;
     let upc = document.getElementById("upc").value;
     let price = document.getElementById("productPrice").value
+    price =  Web3.utils.toWei(price, "ether")
     await sellItem(upc,price).send({from: this.account});
   },
   buyItem: async function (){
     const {isDistributor,addDistributor,isFarmer,buyItem} = this.meta.methods;
-    
+    this.getAccount()
     let upc = document.getElementById("upc").value;
     let price = document.getElementById("productPrice").value;
     let distributorID= document.getElementById("distributorID").value ;
     price =  Web3.utils.toWei(price, "ether")
     
-    await buyItem(upc).send({from: this.account, value: price});
+    let tx = await buyItem(upc).send({from: this.account, value: price});
+    console.log(tx)
   },
   shipItem: async function (){
+    this.getAccount()
     const {shipItem} = this.meta.methods;
     let upc = document.getElementById("upc").value;
     await shipItem(upc).send({from: this.account});
   },
   receiveItem: async function (){
+    this.getAccount();
     const {receiveItem} = this.meta.methods;
     let upc = document.getElementById("upc").value;
     await receiveItem(upc).send({from: this.account});
   },
   purchaseItem: async function (){
+    this.getAccount();
     const {purchaseItem} = this.meta.methods;
     let upc = document.getElementById("upc").value;
     await purchaseItem(upc).send({from: this.account});
   },
   getAccount: async function(){
-
     const accounts = await this.web3.eth.getAccounts();
     this.account = accounts[0];
     console.log(this.account)

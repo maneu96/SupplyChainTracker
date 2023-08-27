@@ -5,7 +5,6 @@ import "../coffeeaccesscontrol/DistributorRole.sol";
 import "../coffeeaccesscontrol/FarmerRole.sol";
 import "../coffeeaccesscontrol/RetailerRole.sol";
 import "../coffeecore/Ownable.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
 
 
 // Define a contract 'Supplychain'
@@ -66,7 +65,7 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole{
   event Processed(uint upc);
   event Packed(uint upc);
   event ForSale(uint upc);
-  event Sold(uint upc);
+  event Sold(uint upc, uint price);
   event Shipped(uint upc);
   event Received(uint upc);
   event Purchased(uint upc);
@@ -94,7 +93,7 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole{
     _;
     uint _price = items[_upc].productPrice;
     uint amountToReturn = msg.value - _price;
-    address payable walletToRefund = payable(items[_upc].consumerID);
+    address payable walletToRefund = payable(msg.sender);
     walletToRefund.transfer(amountToReturn);
   }
 
@@ -228,7 +227,7 @@ string memory _originFarmLatitude, string memory _originFarmLongitude, string me
     items[_upc].itemState = State.Sold;
     // Transfer money to farmer
     farmerWallet.transfer(items[_upc].productPrice);
-    emit Sold(_upc);// emit the appropriate event
+    emit Sold(_upc, items[_upc].productPrice);// emit the appropriate event
     
   }
 
