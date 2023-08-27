@@ -106,7 +106,8 @@ const App = {
     let upc = document.getElementById("upc").value;
     let price = document.getElementById("productPrice").value
     price =  Web3.utils.toWei(price, "ether")
-    await sellItem(upc,price).send({from: this.account});
+    let tx = await sellItem(upc,price).send({from: this.account});
+    this.setStatus(tx.transactionHash)
   },
   buyItem: async function (){
     const {isDistributor,addDistributor,isFarmer,buyItem} = this.meta.methods;
@@ -117,36 +118,37 @@ const App = {
     price =  Web3.utils.toWei(price, "ether")
     
     let tx = await buyItem(upc).send({from: this.account, value: price});
-    console.log(tx)
+    this.setStatus(tx.transactionHash)
   },
   shipItem: async function (){
     this.getAccount()
     const {shipItem} = this.meta.methods;
     let upc = document.getElementById("upc").value;
-    await shipItem(upc).send({from: this.account});
+    let tx = await shipItem(upc).send({from: this.account});
+    this.setStatus(tx.transactionHash)
   },
   receiveItem: async function (){
     this.getAccount();
     const {receiveItem} = this.meta.methods;
     let upc = document.getElementById("upc").value;
-    await receiveItem(upc).send({from: this.account});
+    let tx =await receiveItem(upc).send({from: this.account});
+    this.setStatus(tx.transactionHash);
   },
   purchaseItem: async function (){
     this.getAccount();
     const {purchaseItem} = this.meta.methods;
     let upc = document.getElementById("upc").value;
-    await purchaseItem(upc).send({from: this.account});
+    let tx = await purchaseItem(upc).send({from: this.account});
+    this.setStatus(tx.transactionHash);
   },
   getAccount: async function(){
     const accounts = await this.web3.eth.getAccounts();
     this.account = accounts[0];
-    console.log(this.account)
   },
 
   setRoles: async function(){
    
     const {addFarmer,addDistributor,addRetailer,addConsumer, getOwner} = this.meta.methods;
-   
     const {renounceFarmer,renounceDistributor,renounceRetailer,renounceConsumer} = this.meta.methods;
     let ownerID= await getOwner().call();
     console.log(ownerID);
