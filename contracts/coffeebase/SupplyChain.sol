@@ -4,6 +4,7 @@ import "../coffeeaccesscontrol/ConsumerRole.sol";
 import "../coffeeaccesscontrol/DistributorRole.sol";
 import "../coffeeaccesscontrol/FarmerRole.sol";
 import "../coffeeaccesscontrol/RetailerRole.sol";
+import "../coffeecore/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 
@@ -182,6 +183,7 @@ string memory _originFarmLatitude, string memory _originFarmLongitude, string me
     sku = sku + 1;
     // Emit the appropriate event
     emit Harvested(_upc);
+    
   }
 
   // Define a function 'processtItem' that allows a farmer to mark an item 'Processed'
@@ -208,7 +210,7 @@ string memory _originFarmLatitude, string memory _originFarmLongitude, string me
     // Update the appropriate fields
     items[_upc].productPrice = _price;
     items[_upc].itemState = State.ForSale;
-    emit ForSale(upc);// Emit the appropriate event
+    emit ForSale(_upc);// Emit the appropriate event
     
   }
 
@@ -226,47 +228,42 @@ string memory _originFarmLatitude, string memory _originFarmLongitude, string me
     items[_upc].itemState = State.Sold;
     // Transfer money to farmer
     farmerWallet.transfer(items[_upc].productPrice);
-    emit Sold(upc);// emit the appropriate event
+    emit Sold(_upc);// emit the appropriate event
     
   }
 
   // Define a function 'shipItem' that allows the distributor to mark an item 'Shipped'
   // Use the above modifers to check if the item is sold
-  function shipItem(uint _upc) public 
-    // Call modifier to check if upc has passed previous supply chain stage
-    
-    // Call modifier to verify caller of this function
-    
-    {
-    // Update the appropriate fields
-    
-    // Emit the appropriate event
+  function shipItem(uint _upc) public onlyDistributor() sold(_upc)
+  {
+    // Update the appropriate fields 
+    items[_upc].itemState = State.Shipped; 
+    emit Shipped(_upc);// Emit the appropriate event
     
   }
 
   // Define a function 'receiveItem' that allows the retailer to mark an item 'Received'
   // Use the above modifiers to check if the item is shipped
-  function receiveItem(uint _upc) public 
-    // Call modifier to check if upc has passed previous supply chain stage
-    
-    // Access Control List enforced by calling Smart Contract / DApp
+  function receiveItem(uint _upc) public shipped(_upc) onlyRetailer()
     {
-    // Update the appropriate fields - ownerID, retailerID, itemState
+    items[_upc].ownerID = msg.sender;
+    items[_upc].retailerID = msg.sender;
+    items[_upc].itemState = State.Received;// Update the appropriate fields - ownerID, retailerID, itemState
     
-    // Emit the appropriate event
+    emit Received(_upc);// Emit the appropriate event
     
   }
 
   // Define a function 'purchaseItem' that allows the consumer to mark an item 'Purchased'
   // Use the above modifiers to check if the item is received
-  function purchaseItem(uint _upc) public 
-    // Call modifier to check if upc has passed previous supply chain stage
-    
-    // Access Control List enforced by calling Smart Contract / DApp
+  function purchaseItem(uint _upc) public received(_upc) onlyConsumer()
     {
     // Update the appropriate fields - ownerID, consumerID, itemState
+    items[_upc].ownerID = msg.sender;
+    items[_upc].consumerID = msg.sender;
+    items[_upc].itemState = State.Purchased;
     
-    // Emit the appropriate event
+    emit Purchased(_upc);// Emit the appropriate event
     
   }
 
@@ -303,6 +300,10 @@ string memory _originFarmLatitude, string memory _originFarmLongitude, string me
   originFarmLatitude,
   originFarmLongitude
   );
+  }
+  function getOwner() public view returns(address own){
+    own= owner;
+    return own;
   }
 
   // Define a function 'fetchItemBufferTwo' that fetches the data
