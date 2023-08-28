@@ -8,10 +8,9 @@ import "../coffeecore/Ownable.sol";
 
 
 // Define a contract 'Supplychain'
-contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole{
+contract SupplyChain is Ownable, ConsumerRole, DistributorRole, FarmerRole, RetailerRole{
 
   // Define 'owner'
-  address owner;
 
   // Define a variable called 'upc' for Universal Product Code (UPC)
   uint  upc;
@@ -69,12 +68,6 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole{
   event Shipped(uint upc);
   event Received(uint upc);
   event Purchased(uint upc);
-
-  // Define a modifer that checks to see if msg.sender == owner of the contract
-  modifier onlyOwner() {
-    require(msg.sender == owner);
-    _;
-  }
 
   // Define a modifer that verifies the Caller
   modifier verifyCaller (address _address) {
@@ -148,18 +141,11 @@ contract SupplyChain is ConsumerRole, DistributorRole, FarmerRole, RetailerRole{
   // In the constructor set 'owner' to the address that instantiated the contract
   // and set 'sku' to 1
   // and set 'upc' to 1
-  constructor() public payable {
-    owner = msg.sender;
+  constructor() payable {
     sku = 1;
     upc = 1;
   }
 
-  // Define a function 'kill' if required
-  function kill() public {
-    if (msg.sender == owner) {
-      selfdestruct(payable(owner));
-    }
-  }
 
   // Define a function 'harvestItem' that allows a farmer to mark an item 'Harvested'
   function harvestItem(uint _upc, address _originFarmerID, string memory _originFarmName, string memory _originFarmInformation, 
@@ -300,10 +286,7 @@ string memory _originFarmLatitude, string memory _originFarmLongitude, string me
   originFarmLongitude
   );
   }
-  function getOwner() public view returns(address own){
-    own= owner;
-    return own;
-  }
+
 
   // Define a function 'fetchItemBufferTwo' that fetches the data
   function fetchItemBufferTwo(uint _upc) public view returns 
@@ -343,4 +326,14 @@ string memory _originFarmLatitude, string memory _originFarmLongitude, string me
   consumerID
   );
   }
+
+ /* function addItemsHistory(uint _upc, string memory TX) public 
+  {
+    uint status = uint(items[_upc].itemState); //get the TX step
+    itemsHistory[_upc][status] = TX ;
+  }
+  function getItemsHistory(uint _upc) public view returns ( string[] memory )
+  {
+    return itemsHistory[_upc];
+  } */
 }

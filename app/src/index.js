@@ -61,7 +61,7 @@ const App = {
     document.getElementById("sku").value = buffer2.itemSKU;
     document.getElementById("upc").value = buffer2.itemUPC;
     document.getElementById("productNotes").value = buffer2.productNotes;
-    document.getElementById("productPrice").value = buffer2.productPrice;
+    document.getElementById("productPrice").value = Web3.utils.fromWei(buffer2.productPrice, "ether");
     document.getElementById("distributorID").value = buffer2.distributorID;
     document.getElementById("retailerID").value = buffer2.retailerID;
     document.getElementById("consumerID").value = buffer2.consumerID;
@@ -110,7 +110,7 @@ const App = {
     this.setStatus(tx.transactionHash)
   },
   buyItem: async function (){
-    const {isDistributor,addDistributor,isFarmer,buyItem} = this.meta.methods;
+    const {buyItem} = this.meta.methods;
     this.getAccount()
     let upc = document.getElementById("upc").value;
     let price = document.getElementById("productPrice").value;
@@ -148,9 +148,9 @@ const App = {
 
   setRoles: async function(){
    
-    const {addFarmer,addDistributor,addRetailer,addConsumer, getOwner} = this.meta.methods;
+    const {addFarmer,addDistributor,addRetailer,addConsumer, owner} = this.meta.methods;
     const {renounceFarmer,renounceDistributor,renounceRetailer,renounceConsumer} = this.meta.methods;
-    let ownerID= await getOwner().call();
+    let ownerID= await owner().call();
     console.log(ownerID);
     let originFarmerID= document.getElementById("originFarmerID").value;
     let distributorID= document.getElementById("distributorID").value ;
