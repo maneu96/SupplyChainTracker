@@ -21,7 +21,7 @@ Instructions:
 
 1- Fixed Accounts were used for testing purpuses. 
 If ganache-cli is run with this command, the accounts for the actors can be hard-coded into the Html/JS files. (given the fact that
-metamask is not allowing, at the moment, access to the addresses of its user's wallets, unless it is the one in the selection): 
+metamask is not allowing, at the moment, access to the addresses of its user's wallets, unless it is the one in the selection). Your metamask should also have these accounts: 
 
     ganache-cli -m "spirit supply whale amount human item harsh scare congress discover talent hamster" 
 
@@ -48,7 +48,11 @@ Consumer: 0x18d0ed0cb978ddd066c9e681de8aafcfab497648
 
     http://localhost:8080/
 
-5 - Have fun!
+5 - Your Contract owner account will be asked to interact with the smart contract, in order to give the roles to each account.
+    To see the possibilities of interaction, you can refer to the write up document.
+
+
+6 - Have fun!
 
 
 
