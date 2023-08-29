@@ -16,8 +16,8 @@ Instructions:
 
 
 1- Fixed Accounts were used for testing purpuses. 
-If ganache-cli is run with this command, the accounts for the actors can be hard-coded into the (given the fact that
-metamask is not allowing, at the moment, access to the addresses of its user's wallets, unless it is the one in the selection: 
+If ganache-cli is run with this command, the accounts for the actors can be hard-coded into the Html/JS files. (given the fact that
+metamask is not allowing, at the moment, access to the addresses of its user's wallets, unless it is the one in the selection): 
 
     ganache-cli -m "spirit supply whale amount human item harsh scare congress discover talent hamster" 
 
