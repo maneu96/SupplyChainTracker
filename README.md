@@ -11,7 +11,11 @@ Requirements:
     Solidity - 0.8.12 (solc-js)
     Node v18.16.0
 
-Fixed Accounts were used for testing purpuses. 
+
+Instructions:
+
+
+1- Fixed Accounts were used for testing purpuses. 
 If ganache-cli is run with this command, the accounts for the actors can be hard-coded into the (given the fact that
 metamask is not allowing, at the moment, access to the addresses of its user's wallets, unless it is the one in the selection: 
 
@@ -26,3 +30,21 @@ Distributor: 0xb705dd03a3981590b942fafffe318470f05597f9
 Retailer: 0x3dfe9d12025f4c4b9271b872a8820de44d82e9c5
 
 Consumer: 0x18d0ed0cb978ddd066c9e681de8aafcfab497648
+
+
+2- In a new terminal window, Run the command to deploy the contract to the local testnet (provided by ganache):
+
+    truffle migrate --reset
+
+3 -In another terminal window cd into the /app folder and run:
+
+    npm run dev
+
+4 - Go to this location on your browser:
+
+    http://localhost:8080/
+
+5 - Have fun!
+
+
+
