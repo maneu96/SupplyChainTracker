@@ -18,11 +18,11 @@
  *
  */
 
-// const HDWallet = require('truffle-hdwallet-provider');
-// const infuraKey = "fj4jll3k.....";
+ const HDWallet = require('truffle-hdwallet-provider');
+ const infuraKey = "de65c8de8ec742aaa8868e22caae85fd";
 //
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+ const fs = require('fs');
+ const mnemonic = fs.readFileSync("mnemonic.secret").toString().trim();
 
 module.exports = {
   /**
@@ -52,6 +52,14 @@ module.exports = {
       port: 8545
     },
 
+    sepolia: {
+      provider: () => new HDWallet(mnemonic, `https://sepolia.infura.io/v3/${infuraKey}`),
+        network_id: 11155111,       // Sepolia's id
+    },
+    goerli:{
+      provider: () => new HDWallet(mnemonic, `https://goerli.infura.io/v3/${infuraKey}`),
+      network_id: 5,       // Sepolia's id
+    }
     // Another network with more advanced options...
     // advanced: {
       // port: 8777,             // Custom port
