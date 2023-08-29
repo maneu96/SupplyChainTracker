@@ -1,9 +1,13 @@
 # SupplyChainTracker
-Dapp that allows actors in a supply chain to create, interact and validate products. (IN Development, still has to be deployed in a test net)
+Dapp that allows actors in a supply chain to create, interact and validate products.
 
 Interact with the code, as a Farmer, Distributor, Retailer or Consumer and watch how the item is created, logged and how its owner's address changes
 during every crucial step in a supply chain.
 
+Deployed on Goerli test net:
+    
+    Transaction Hash: 0x39dd4a1bd4c147ea1aeac367b1ee30b15cef2425d290c2ca8cbcf375e2569957
+    Contract Address: 0x385deEFe6428b382Acb1b8484611b87755a88172
 Requirements: 
 
     Truffle v5.11.2 (core: 5.11.2)
